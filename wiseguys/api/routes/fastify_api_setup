@@ -1,0 +1,26 @@
+// api/index.js
+const fastify = require('fastify')({ logger: true });
+const fastifyCors = require('fastify-cors');
+const playersRoutes = require('./routes/players');
+const teamsRoutes = require('./routes/teams');
+const gamesRoutes = require('./routes/games');
+
+// Configure CORS
+fastify.register(fastifyCors, { origin: true });
+
+// Register routes
+fastify.register(playersRoutes, { prefix: '/players' });
+fastify.register(teamsRoutes, { prefix: '/teams' });
+fastify.register(gamesRoutes, { prefix: '/games' });
+
+// Start the server
+const start = async () => {
+  try {
+    await fastify.listen({ port: 3000 });
+    console.log('API running on http://localhost:3000');
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+};
+start();
